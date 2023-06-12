@@ -43,12 +43,6 @@ class Tile():
         self.end = False
 
     
-    def is_closed(self):
-        return self.color == RED
-
-    def is_opened(self):
-        return self.color == GREEN
-    
     def is_barrier(self):
         return self.color == BLACK
     
@@ -81,9 +75,6 @@ class Tile():
 
     def get_pos(self):
         return self.x, self.y
-
-    def make_barrier(self):
-        self.color = BLACK
 
     def reset(self):
         self.color = DO_NOT_DRAW
@@ -258,9 +249,6 @@ def main(win):
                     end = tile
                     tile.make_end()
 
-                # Third click
-                if tile != end and tile != start:
-                    tile.make_barrier()
 
             # RIGHT CLICK - reset Tile
             if pygame.mouse.get_pressed()[2]:
