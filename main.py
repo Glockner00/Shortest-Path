@@ -11,7 +11,7 @@ DO_NOT_DRAW = (1, 1, 1)
 
 WIDTH = 1200
 HEIGHT = 1200
-TOTAL_ROWS = 100
+TOTAL_ROWS = 150
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 IMAGE = pygame.image.load("images/halfmap.png")
@@ -30,12 +30,12 @@ FILENAME = "grid.pickle"
 
 
 class Tile():
-    def __init__(self, row, col, cell_width):
+    def __init__(self, row, col):
         self.row = row
         self.col = col
-        self.cell_width = cell_width
-        self.x = cell_width * col
-        self.y = cell_width * row
+        self.cell_width = WIDTH // TOTAL_ROWS
+        self.x = self.cell_width * col
+        self.y = self.cell_width * row
         self.color = DO_NOT_DRAW
         self.neighbors = []
         self.b = False
@@ -68,11 +68,10 @@ class Tile():
 
 def make_grid():
     grid = []
-    gap = WIDTH // TOTAL_ROWS
     for i in range(TOTAL_ROWS):
         grid.append([])
         for j in range(TOTAL_ROWS):
-            tile = Tile(i, j, gap)
+            tile = Tile(i, j)
             grid[i].append(tile)
     return grid
 
@@ -96,8 +95,8 @@ def draw_grid(win):
             pygame.draw.line(win, BLUE, (j * gap, 0), (j * gap, WIDTH))
 
 
-def mouse_clicked_position(pos, row, width):
-    gap = width // row  # width of each cube
+def mouse_clicked_position(pos, row):
+    gap = WIDTH//row  # width of each cube
     x, y = pos
     col = x // gap
     row = y // gap
@@ -117,7 +116,7 @@ def load_grid(filename):
 
 def main(win):
     grid = load_grid(FILENAME)
-
+    # grid = make_grid()
     run = True
     while run:
         draw(win, grid)
@@ -128,13 +127,13 @@ def main(win):
             # LEFT CLICK - make barrier
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
-                row, col = mouse_clicked_position(pos, TOTAL_ROWS, WIDTH)
+                row, col = mouse_clicked_position(pos, TOTAL_ROWS)
                 grid[row][col].make_barrier()
 
             # RIGHT CLICK - reset Tile
             if pygame.mouse.get_pressed()[2]:
                 pos = pygame.mouse.get_pos()
-                row, col = mouse_clicked_position(pos, TOTAL_ROWS, WIDTH)
+                row, col = mouse_clicked_position(pos, TOTAL_ROWS)
                 tile = grid[row][col]
                 tile.reset()
 
