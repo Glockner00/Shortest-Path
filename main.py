@@ -1,5 +1,7 @@
 import pygame
+import pickle
 
+from pygame.image import load
 # Define constants
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -10,13 +12,12 @@ DO_NOT_DRAW = (1, 1, 1)
 
 WIDTH = 1200
 HEIGHT = 1200
-CELL_WIDTH = 25
 TOTAL_ROWS = 100
-
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 IMAGE = pygame.image.load("images/halfmap.png")
 IMAGE_SCALED = pygame.transform.scale(IMAGE, (WIDTH, HEIGHT))
+FILENAME = "grid.pickle"
 
 
 class Tile():
@@ -52,7 +53,8 @@ class Tile():
     def draw(self, win):
         if self.color != DO_NOT_DRAW:
             pygame.draw.rect(
-                win, self.color, (self.x, self.y, self.cell_width, self.cell_width))
+                win, self.color, (self.x, self.y,
+                                  self.cell_width, self.cell_width))
 
 
 def make_grid():
@@ -84,21 +86,28 @@ def draw_grid(win):
         for j in range(TOTAL_ROWS):
             pygame.draw.line(win, BLUE, (j * gap, 0), (j * gap, WIDTH))
 
-# Returns the coordinates that are clicked.
-
 
 def mouse_clicked_position(pos, row, width):
     gap = width // row  # width of each cube
     x, y = pos
     col = x // gap
     row = y // gap
-
     return row, col
 
 
+def save_grid(grid, filename):
+    with open(filename, 'wb') as file:
+        pickle.dump(grid, file)
+
+
+def load_grid(filename):
+    with open(filename, 'rb') as file:
+        grid = pickle.load(file)
+    return grid
+
+
 def main(win):
-    grid = make_grid()
-    print(len(grid))
+    grid = load_grid(FILENAME)
 
     run = True
     while run:
@@ -120,7 +129,9 @@ def main(win):
                 tile = grid[row][col]
                 tile.reset()
 
+    save_grid(grid, FILENAME)
     pygame.quit()
+
 
 if __name__ == "__main__":
     pygame.init()
