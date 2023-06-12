@@ -1,7 +1,6 @@
 import pygame
 import pickle
 
-from pygame.image import load
 # Define constants
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -18,6 +17,16 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 IMAGE = pygame.image.load("images/halfmap.png")
 IMAGE_SCALED = pygame.transform.scale(IMAGE, (WIDTH, HEIGHT))
 FILENAME = "grid.pickle"
+
+# TODO:
+# 1.      Map out where it is allowed to run.
+# 2.      Change barriers to a bool.
+# 3.      Implement A*.
+# 4.      Figure out how to choose start point and end point.
+# 5.          - Click for position?
+# 6.          - Select two numbers on the map?
+# 7.      Remove make_grid and draw_grid and all other visuall representation.
+# 8.      Make an app/interface that is somewhat useable.
 
 
 class Tile():
@@ -69,8 +78,8 @@ def make_grid():
 
 
 def draw(win, grid):
-    win.fill(WHITE)  # Fill the window with transparent color
-    win.blit(IMAGE_SCALED, (0, 0))  # Draw the image on top of the window
+    win.fill(WHITE)
+    win.blit(IMAGE_SCALED, (0, 0))
     for row in grid:
         for tile in row:
             tile.draw(win)
