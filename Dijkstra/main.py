@@ -25,7 +25,7 @@ for nodes-1 itterations.
 import sys
 
 # Returns the node that has the smallest value. --> processing.
-def selectMinNode(value, processed):
+def selectMinNode(value, processed, V):
     minimum = sys.maxsize
     node = None
     for i in range(V):
@@ -44,15 +44,27 @@ def dijkstra(graph, V):
     value[0] = 0   # Which means that the start-node has no value.
 
     for i in range(V-1):
-        U = selectMinNode(value, processed)
+        U = selectMinNode(value, processed, V)
         processed[U] = True
         for j in range(V):
             if(graph[U][j] !=0 and not processed[j] and value[U] != sys.maxsize and (value[U] + graph[U][j] < value[j])):
                 value[j] = value[U] + graph[U][j]
                 parent[j] = U
 
+    print("\nVisualization of the algorithm. ")
     for i in range(1, V):
         print(f"U-->V: {parent[i]} --> {i} weight = {graph[parent[i]][i]}")
+
+    # Print shortest path from node 1 to node 5
+    path = []
+    node = 5
+    total_weight = value[5]
+    while node != -1:
+        path.append(node)
+        node = parent[node]
+    path.reverse()
+    print("\nShortest path:", path)
+    print("Total weight:", total_weight)
 
 
 def main():
