@@ -23,37 +23,48 @@ for nodes-1 itterations.
 """
 
 import sys
+import time
 
 # Returns the node that has the smallest value. --> processing.
 def selectMinNode(value, processed, V):
     minimum = sys.maxsize
     node = None
     for i in range(V):
-        if not processed[i] and value[i]<minimum:
+        if not processed[i] and value[i] < minimum:
             node = i
             minimum = value[i]
     return node
 
 
 def dijkstra(graph, V):
-    parent = [0] * V          # Stores each nodes parent.
+    parent = [-1] * V         # Stores each node's parent.
     value = [sys.maxsize] * V # Stores shortest path to each node.
-    processed = [False] * V   # Determins which node to be processed.
+    processed = [False] * V   # Determines which node to be processed.
 
-    parent[0] = -1 # The first element is the start node
-    value[0] = 0   # Which means that the start-node has no value.
+    parent[0] = -1  # The first element is the start node
+    value[0] = 0    # Which means that the start-node has no value.
 
-    for i in range(V-1):
+    start_time = time.time()  # Start the timer
+
+    for i in range(V - 1):
         U = selectMinNode(value, processed, V)
         processed[U] = True
         for j in range(V):
-            if(graph[U][j] !=0 and not processed[j] and value[U] != sys.maxsize and (value[U] + graph[U][j] < value[j])):
+            if (
+                graph[U][j] != 0
+                and not processed[j]
+                and value[U] != sys.maxsize
+                and (value[U] + graph[U][j] < value[j])
+            ):
                 value[j] = value[U] + graph[U][j]
                 parent[j] = U
 
-    print("\nVisualization of the algorithm. ")
+    end_time = time.time()  # Stop the timer
+
+    print("\nVisualization of the algorithm.")
     for i in range(1, V):
-        print(f"U-->V: {parent[i]} --> {i} weight = {graph[parent[i]][i]}")
+        if parent[i] != -1:
+            print(f"U --> V: {parent[i]} --> {i} weight = {graph[parent[i]][i]}")
 
     # Print shortest path from node 1 to node 5
     path = []
@@ -65,6 +76,7 @@ def dijkstra(graph, V):
     path.reverse()
     print("\nShortest path:", path)
     print("Total weight:", total_weight)
+    print("Execution time:", end_time - start_time, "seconds")
 
 
 def main():
