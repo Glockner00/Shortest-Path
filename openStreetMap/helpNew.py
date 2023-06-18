@@ -1,5 +1,6 @@
 from collections import defaultdict
 import convertToGraphml as ctg
+import math
 import json
 
 graphml_path = 'data/map.graphml'
@@ -22,7 +23,7 @@ def get_lat_lon(osmID):
             return lat, lon
     return None
 
-def get_neighbors(osmID):
+def get_neighbors(osmID, dest_id):
     neighbor_info = defaultdict(list)  # initilized with an empty list.
     item = xmldoc.getElementsByTagName('edge')
     neighbor_edges = [edge for edge in item if edge.getAttribute('source') == osmID]
@@ -32,15 +33,16 @@ def get_neighbors(osmID):
         data_elements = edge.getElementsByTagName('data')
         length = next(data.firstChild.data for data in data_elements if data.getAttribute('key') == 'd14')
         latlon_neighbor = get_lat_lon(neighbor)
-        heuristic = get_heuristic(latlon_neighbor, destination_node=0)
+        heuristic = get_heuristic(latlon_neighbor, get_lat_lon(dest_id))
         neighbor_info[osmID].append((neighbor, latlon_neighbor, length, heuristic))
 
     return neighbor_info
 
-def get_heuristic(current_node, destination_node):
-    return 0
+def get_heuristic(current_node, destination_node):  
+    x1,y1 = current_node
+    x2,y2 = destination_node
+    return (math.sqrt(((x2-x1)**2)+((y2-y1)**2)))
 
-id = "6821312"
-my_dict = (get_neighbors(id))
-
-#print(json.dumps(get_neighbors(id), indent=1))
+id="6821312"
+dest_id="2571591346"
+print(json.dumps(get_neighbors(id, dest_id), indent=1))
