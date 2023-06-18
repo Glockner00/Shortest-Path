@@ -47,7 +47,8 @@ def get_neighbors(osmID, destination_node):
     neighbor_info[osmID] = neighbor_list
     return neighbor_info
 
-def get_heuristic(current_node, destination_node):  
+def get_heuristic(current_node, destination_node):
+    print(destination_node)
     x1,y1 = current_node
     x2,y2 = destination_node
     return (math.sqrt(((x2-x1)**2)+((y2-y1)**2)))
