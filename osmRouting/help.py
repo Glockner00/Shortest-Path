@@ -48,11 +48,29 @@ def get_neighbors(osmID, destination_node):
     return neighbor_info
 
 def get_heuristic(current_node, destination_node):
-    print(destination_node)
     x1,y1 = current_node
     x2,y2 = destination_node
     return (math.sqrt(((x2-x1)**2)+((y2-y1)**2)))
 
-id = "6821312"
-dest_id = "2571591346"
-print(json.dumps(get_neighbors(id, dest_id), indent=1))
+def get_information1(neighbors):
+    id = 0
+    h = 0
+    cost = 0
+    for k, v in neighbors.items():
+        for element in v:
+            for key, value in element.items():
+                id = key
+                cost = value[1]
+                h = value[2]
+    return id, h ,cost
+
+def get_information(neighbor):
+    id = 0
+    h = 0
+    cost = 0
+    for k, v in neighbor.items():
+        id = k
+        h = v[2]
+        cost = v[1]
+    return id, h, cost
+    

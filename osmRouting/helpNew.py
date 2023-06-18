@@ -40,3 +40,12 @@ def get_heuristic(current_node, destination_node):
     x1,y1 = current_node
     x2,y2 = destination_node
     return (math.sqrt(((x2-x1)**2)+((y2-y1)**2)))
+
+def get_information(neighbors):
+    id = 0
+    h = 0
+    cost = 0
+    for k, v in neighbors.items():
+        print("v: ",v, "\n")
+        print("id: ", id, "\n" "h: ",h,"\n", "cost: ",cost, "\n")
+    return id, h, cost

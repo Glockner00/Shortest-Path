@@ -2,6 +2,11 @@ import helpNew as hf
 from heapq import heappop, heappush
 import json
 
+"""
+Returns the path from the startnode to the destination node as a list or dict.
+https://xq-blog.dev/blog/astar/
+"""
+
 class Node:
     def __init__(self, id, x, y, parent, cost, heuristic):
         self.id = id
@@ -23,9 +28,15 @@ def a_star(start_id, end_id):
     
     queue = [start_node]
     node = heappop(queue)
-    print(node)
-    next_moves = hf.get_neighbors(node.id, end_id)
-    print(json.dumps(next_moves, indent=2))
+    neighbor_nodes = []
+    neighbors = hf.get_neighbors(node.id, end_id)
+    for key, value in neighbors.items():
+        for element in value:
+            id, x, y, len, h = hf.neighbor_information(neighbors, element)
+            cost = node.cost + len
+            neighbor_nodes.append(Node(id, x, y, node, cost, h))
+
+    
 
 def main():
     start_id = "6821312"
