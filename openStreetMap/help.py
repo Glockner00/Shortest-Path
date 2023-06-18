@@ -1,5 +1,19 @@
 import convertToGraphml as ctg
 
+"""
+<node id="6821312">
+      <data key="d4">59.3064604</data>
+      <data key="d5">14.4686764</data>
+    </node>
+
+line 27
+
+all neighbours: 
+6821302
+288999779
+2192637296
+"""
+
 graphml_path = 'data/map.graphml'
 xmldoc = ctg.parseXML(graphml_path)
 
@@ -23,13 +37,17 @@ def get_lat_lon(osmID):
     return None
 
 def get_neighbours(osmID):
-    pass
+    new_ids = []
+    items = xmldoc.getElementsByTagName('edge')
+    for edge in items:
+        if(edge.getAttribute('source') == osmID):
+            new_ids.append(edge.getAttribute('target'))
+    return new_ids
 
 def get_heuristic(current_node, destination_node):
     pass
 
 
-id = get_osmID(59.3067734,14.4666375)
-print(id)
-lat_lon = get_lat_lon(id)
-print(lat_lon)
+id = "6821312"
+print(get_neighbours(id))
+
