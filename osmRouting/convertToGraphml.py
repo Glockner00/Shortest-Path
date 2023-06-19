@@ -1,6 +1,7 @@
 import osmnx as ox
 from xml.dom import minidom
 
+graphml_path = 'data/map.graphml'
 path = "data/map.osm"
 new_path = "data/map.graphml"
 

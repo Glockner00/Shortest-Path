@@ -72,5 +72,5 @@ def get_information(neighbor):
         id = k
         h = v[2]
         cost = v[1]
-    return id, h, cost
+    return id, get_lat_lon(id), float(cost), float(h)
     

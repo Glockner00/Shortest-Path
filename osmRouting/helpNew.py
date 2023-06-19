@@ -2,8 +2,8 @@ from collections import defaultdict
 import convertToGraphml as ctg
 import math
 
-graphml_path = 'data/map.graphml'
-xmldoc = ctg.parseXML(graphml_path)
+
+xmldoc = ctg.parseXML(ctg.graphml_path)
 
 def get_osmID(lat, lon):
     for node in xmldoc.getElementsByTagName('node'):
@@ -23,7 +23,7 @@ def get_lat_lon(osmID):
     return None
 
 def get_neighbors(osmID, dest_id):
-    neighbor_info = defaultdict(list)  # initilized with an empty list.
+    neighbor_info = defaultdict(list)
     item = xmldoc.getElementsByTagName('edge')
     neighbor_edges = [edge for edge in item if edge.getAttribute('source') == osmID]
 
@@ -37,15 +37,15 @@ def get_neighbors(osmID, dest_id):
     return neighbor_info
 
 def get_heuristic(current_node, destination_node):  
-    x1,y1 = current_node
-    x2,y2 = destination_node
-    return (math.sqrt(((x2-x1)**2)+((y2-y1)**2)))
+    x1, y1 = current_node
+    x2, y2 = destination_node
+    return math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2))
 
 def get_information(neighbors):
     id = 0
     h = 0
     cost = 0
     for k, v in neighbors.items():
-        print("v: ",v, "\n")
-        print("id: ", id, "\n" "h: ",h,"\n", "cost: ",cost, "\n")
+        print("v: ", v, "\n")
+        print("id: ", id, "\n" "h: ", h, "\n", "cost: ", cost, "\n")
     return id, h, cost
