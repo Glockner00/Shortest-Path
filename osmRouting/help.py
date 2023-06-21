@@ -1,6 +1,6 @@
 import convertToGraphml as ctg
 import math
-import json
+import astar as a
 
 graphml_path = 'data/map.graphml'
 xmldoc = ctg.parseXML(graphml_path)
@@ -73,4 +73,21 @@ def get_information(neighbor):
         h = v[2]
         cost = v[1]
     return id, get_lat_lon(id), float(cost), float(h)
-    
+
+
+def get_urlpath(start, end):
+    path = ""
+    f_dist, came_from, t = a.astar(start, end)
+    if f_dist is not None:
+        current_node_id = get_osmID(end[0], end[1])
+        astar_path = [current_node_id]
+        while current_node_id != get_osmID(start[0], start[1]):
+            current_node_id = came_from[current_node_id]
+            astar_path.append(current_node_id)
+        astar_path.reverse()
+
+        for node_id in astar_path:
+            coordinate = get_lat_lon(node_id)
+            path += f"{coordinate[0]},{coordinate[1]}|"
+        path = path[:-1]
+    return path    
