@@ -4,18 +4,18 @@ How the algorithm works.
 set all the weights between the nodes. --> 2d-array, graph.
 set arrays: value = 0(source-node), inf ,inf ,inf ,inf ,inf
 			parent = -1, -1, -1, -1, -1, -1 (currently no parents)
-            processed = False, False, False, False, False 
-            
+            processed = False, False, False, False, False
+
 for nodes-1 itterations.
-	
+
     1.	pick a minimum value node that is not yet processed.
 	2.	mark the minumum node as processed.
 	3.	udate all the adj verticies. The nodes moves from U-->V.
 		if (value[U](weight at current node.) + graph[U][V](weight to the new node) < value[V](current weight at new node)):
 			update
-        else: 
+        else:
 			continue
-            
+
     # Three conditions to consider
     # 1. The edge is present from U to j.
     # 2. The vertex j is not included in the shortest path graph
@@ -26,7 +26,7 @@ import sys
 import time
 
 # Returns the node that has the smallest value. --> processing.
-def selectMinNode(value, processed, V):
+def selectMinVertex(value, processed, V):
     minimum = sys.maxsize
     node = None
     for i in range(V):
@@ -47,17 +47,15 @@ def dijkstra(graph, V):
     start_time = time.time()  # Start the timer
 
     for i in range(V - 1):
-        U = selectMinNode(value, processed, V)
+        U = selectMinVertex(value, processed, V)
         processed[U] = True
         for j in range(V):
-            if (
-                graph[U][j] != 0
+            if (graph[U][j] != 0
                 and not processed[j]
                 and value[U] != sys.maxsize
-                and (value[U] + graph[U][j] < value[j])
-            ):
-                value[j] = value[U] + graph[U][j]
-                parent[j] = U
+                and (value[U] + graph[U][j] < value[j])):
+                    value[j] = value[U] + graph[U][j]
+                    parent[j] = U
 
     end_time = time.time()  # Stop the timer
 

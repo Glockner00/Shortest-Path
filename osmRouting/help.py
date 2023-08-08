@@ -39,8 +39,7 @@ def get_neighbors(osmID, destination_node):
                     length = data.firstChild.data
             
             latlon_neighbor = get_lat_lon(neighbor)
-            # TODO implment herustic method
-            heuristic = get_heuristic(latlon_neighbor, get_lat_lon(destination_node))
+            heuristic = get_heuristic1(latlon_neighbor, get_lat_lon(destination_node))
             tmp[neighbor] = [latlon_neighbor, length, heuristic]
             neighbor_list.append(tmp)
 
@@ -51,6 +50,11 @@ def get_heuristic(current_node, destination_node):
     x1,y1 = current_node
     x2,y2 = destination_node
     return (math.sqrt(((x2-x1)**2)+((y2-y1)**2)))
+
+def get_heuristic1(current_node, destination_node):
+    x1,y1 = current_node
+    x2,y2 = destination_node
+    return abs(x2 - x1) + abs(y2 - y1)
 
 def get_information1(neighbors):
     id = 0
@@ -75,8 +79,8 @@ def get_information(neighbor):
     return id, get_lat_lon(id), float(cost), float(h)
 
 
-def get_urlpath(start, end):
-    path = ""
+def get_urlpath_parameter(start, end):
+    path = "color:0x0000ff|weight:5|"
     f_dist, came_from, t = a.astar(start, end)
     if f_dist is not None:
         current_node_id = get_osmID(end[0], end[1])
